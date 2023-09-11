@@ -1,4 +1,4 @@
-[
+export default [
   {
     "name": "Ada Lovelace",
     "img": "https://github.com/Laboratoria/bootcamp/assets/123121338/0bb08093-ad55-420b-8366-2ebcc9f1f646",
@@ -215,4 +215,4 @@
     },
     "description": "Inventora de la primera computadora de procesamiento de texto"
   }
-]
+];
