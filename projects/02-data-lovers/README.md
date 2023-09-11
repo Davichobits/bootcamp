@@ -35,23 +35,17 @@ usuarias, al lado derecho.
 
 ## 2. Resumen del proyecto
 
-**Construirás una _página web_ para visualizar el
-_conjunto (set) de datos_** generado anteriormente. Esta página web se
-adecuará a lo que descubras que tu usuario necesita.
-
-Además, en este proyecto utilizarás herramientas de
+En este proyecto *construirás una _página web_ para visualizar,
+filtrar, ordenar y agregar un _conjunto (set) de datos_ 
+en formato
+[JSON](https://es.wikipedia.org/wiki/JSON)** generados con herramientas de
 [inteligencia artificial](https://es.wikipedia.org/wiki/Inteligencia_artificial)
-como [ChatGPT](https://openai.com/chatgpt), [ExplainDev](https://explain.dev/),
-entre otras para generar set de datos en formato
-[JSON](https://es.wikipedia.org/wiki/JSON).
-
-El propósito de generar la data en esta manera es brindarte la oportunidad de
-adentrarte en el empleo de herramientas impulsadas por la inteligencia
-artificial, así como en tecnicas de
-[Prompting](https://learnprompting.org/es/docs/intro).
-
-Como entregable final tendrás una página web que permita **visualizar la data,
-filtrarla, ordenarla y calcular alguna estadística**. Con estadística
+como [ChatGPT](https://openai.com/chatgpt) o [Bard](https://bard.google.com/).
+El propósito de generar los datos con estas herramientas es aprender
+técnicas de
+[Prompting](https://learnprompting.org/es/docs/intro)
+para interactuar con inteligencias artificiales.
+Con agregar datos
 nos referimos a distintos cálculos que puedes hacer con la data para mostrar
 información aún más relevante para los usuarios (promedio, el valor máximo
 o mínimo, etc).
@@ -63,9 +57,9 @@ o mínimo, etc).
 * El tiempo estimado que deberías dedicar a la [generación de la data](#generar-de-la-data)
   es de máximo un sprint. Además, al final del proyecto deberás presentar
   un [screenshot del prompt utilizado](#prompt-utilizado).
-* Si ves que te va a tomar más tiempo, te
-  recomendamos utilizar la data de ejemplo que la vas a encontrar en
-  esta ruta: `./src/data/data.json`.
+* Si transcurrido un sprint no tienes un conjunto de 
+  datos generados deberás utilizar los datos de ejemplo ubicados en la
+  ruta: [`./src/data/dataSet.js`](./src/data/dataSet.js).
 * El proyecto será entregado subiendo tu código a GitHub (commit/push) y la
   interfaz será desplegada usando [GitHub Pages](https://pages.github.com/).
 
@@ -99,11 +93,15 @@ Aquí definimos en más detalle las funcionalidades mínimas que debe tener:
   Por ejemplo, la siguiente data correspondiente a pokemón Pikachu:
 
   ```json
-    {
-      "num": "025",
-      "name": "pikachu",
-      "pokemon-rarity": "normal",
-    }
+   {
+    "name": "pikachu",
+    "img": "URL_DE_LA_IMAGEN_GENERADA",
+    "statistic": {
+      "value": 25,
+      "label": "Num",
+    },
+    "description": "Pokemón preferido de Ash",
+  }
   ```
 
   puede ser estructurada semánticamente en HTML como:
@@ -112,7 +110,7 @@ Aquí definimos en más detalle las funcionalidades mínimas que debe tener:
   <dl itemscope itemtype="pokemon">
     <dt>Name:</dt><dd itemprop="name">pikachu</dd>
     <dt>Number:</dt><dd itemprop="num">025</dd>
-    <dt>Rarity:</dt><dd itemprop="pokemon-rarity">normal</dd>
+    <dt>Description:</dt><dd itemprop="description">Pokemón preferido de Ash</dd>
   </dl>
   ```
 
@@ -196,7 +194,7 @@ como toda la configuración de dependencias:
 ├── package.json
 ├── src
 |  ├── data 
-|  |  └── data.json (La que hayas generado con la IA)
+|  |  └── dataSet.js (La que hayas generado con la IA)
 |  ├── dataFunctions.js
 |  ├── view.js
 |  ├── index.html
@@ -225,23 +223,8 @@ manejadores de eventos (_event listeners_ o _event handlers_).
 Esta no es la única forma de dividir tu código, puedes usar más archivos y
 carpetas, siempre y cuando la estructura sea clara para tus compañeras.
 
-En este archivo encontrarás una serie de _imports_ _comentados_. Para _cargar_
-las diferentes fuentes de datos tendrás que _descomentar_ la línea
-correspondiente.
-
-Por ejemplo, si "descomentamos" la siguiente línea:
-
-```js
-// import data from './data/lol/lol.js';
-```
-
-La línea quedaría así:
-
-```js
-import data from './data/lol/lol.js';
-```
-
-Y ahora tendríamos la variable `data` disponible en el script `src/main.js`.
+En este archivo encontrarás un _import_ para _traer_
+los datos del archivo [./src/data/dataSet.js]
 
 ### `src/dataFunctions.js`
 
@@ -276,13 +259,9 @@ e independientes del DOM. Estas funciones serán después usadas desde el archiv
 
 ### `src/data`
 
-En esta carpeta están los datos de las diferentes fuentes. Encontrarás una
-carpeta por cada fuente, y dentro de cada carpeta dos archivos: uno con la
-extensión `.js` y otro `.json`. Ambos archivos contienen la misma data; la
-diferencia es que el `.js` lo usaremos a través de una etiqueta `<script>`,
-mientras que el `.json` está ahí para opcionalmente cargar la data de forma
-asíncrona con [`fetch()`](https://developer.mozilla.org/es/docs/Web/API/Fetch_API)
-(ver sección de [_Parte Opcional_](#7-hacker-edition)).
+En esta carpeta están los datos generados. Encontrarás un
+archivo de `dataSet.js` que usaremos a través de un `import` en
+el archivo `src/main.js`.
 
 ### `test/dataFunctions.spec.js`
 
@@ -426,145 +405,6 @@ npm run test:oas // Esto es para correr todos los tests de OAs
 
 ### Criterios del proyecto
 
-#### Definición del producto
-
-Documenta brevemente tu trabajo en el archivo `README.md` de tu repositorio,
-contándonos cómo fue tu proceso de diseño y cómo crees que el producto resuelve
-el problema (o problemas) que tiene tu usuaria.
-
-#### Historias de usuario
-
-Una vez que entiendas las necesidades de tus usuarios, escribe las [Historias
-de Usuario](https://es.wikipedia.org/wiki/Historias_de_usuario) que representen
-todo lo que la usuaria necesita hacer/ver. Las **Historias de Usuario** deben
-ser el resultado de tu proceso de investigación o _research_ de tus usuarios.
-
-Asegúrate de incluir la definición de terminado (_definition of done_) y los
-Criterios de Aceptación para cada una.
-
-Usa tus historias de usuario para planificar tus sprints dividiendo
-cada historia en tareas.
-
-En la medida de lo posible, termina una Historia de Usuario antes de pasar
-a la siguiente (Cumple con Definición de Terminado + Criterios de Aceptación).
-
-#### Generar la data
-
-La temática será a tu gusto, por ejemplo, pueden ser personajes importantes en la
-historia, países, películas... etc. El archivo JSON debe tener una cantidad de 24
-objetos. Y la estructura de cada objeto deberá ser la siguiente:
-
-* `name:` Nombre del dato que se va dibujar en la vista.
-* `img:` URL de la imagen. Esta imagen será generada a través de alguna
-  herramienta basada en inteligencia artifical. Una vez generada la imagen,
-  ésta será descargada y guardada en una carpeta del proyecto. La URL de
-  esta imagen será agregada manualmente al JSON.
-* `statistics:` Un objeto con las siguientes propiedades:
-  - `value`: Un valor numérico para el cálculo agregado (por ejemplo,
-    puntuaciones, cantidades, fechas, etc).
-  - `label`: Descripción el valor numérico
-* `description:` Descripción corta sobre el dato.
-
-Un ejemplo de data, según los requisitos anteriores podría ser:
-
-```json
-[
-  {
-    "name": "Ada Lovelace",
-    "img": "URL_DE_LA_IMAGEN_GENERADA",
-    "statistic": {
-      "value": 1843,
-      "label": "año de nacimiento",
-    },
-    "description": "Primera programadora de la historia",
-  },
-  //... 23 objetos más
-]
-```
-
-La data generada deberás reemplazarla por el contenido de este archivo:
-`./src/data/data.json`.
-
-**El tiempo estimado que deberías dedicar a la generación de esta data
-es de máximo un sprint.** Si ves que te va a tomar más tiempo, te recomendamos
-utilizar la data de ejemplo que la vas a en contrar en el archivo anterior:
-`./src/data/data.json`.
-
-Las URLs de las imágenes, dentro del archivo JSON, deben hacer referencia
-a una directorio dentro del proyecto. Aquí almacenarás las imágenes que necesitarás
-para cada objeto.
-
-Una vez que tengas el archivo JSON completo, recuerda correr los test con
-`npm run test` para verificar que el archivo JSON esté cumpliendo con lo
-solicitado.
-
-Una vez que hayas delimitado tu campo de interés y generado el JSON con la
-asistencia de la inteligenica artificial, dedica tiempo a comprender a
-fondo a tu usuario y sus
-necesidades específicas. A partir de esta comprensión, podrás diseñar la
-interfaz que facilite una interacción más efectiva y una comprensión más
-completa de los datos presentados.
-
-#### Prompt utilizado
-
-Dentro del readme que armarás, debe incluir una captura de pantalla
-de tu prompt utilizado para generar la data. Si utilizaste varios prompts,
-puedes adjuntar todas las capturas que necesites.
-
-#### Diseño de la Interfaz de Usuario
-
-##### Prototipo de baja fidelidad
-
-Durante tu trabajo deberás haber hecho e iterado bocetos (_sketches_) de tu
-solución usando papel y lápiz. Te recomendamos tomar fotos de todas las
-iteraciones que hagas, que las subas a tu repositorio y las menciones en tu
-`README.md`.
-
-Recuerda pedir feedback de tu prototipo a tus compañeras y/o coaches.
-
-##### Prototipo de alta fidelidad
-
-Lo siguiente es diseñar tu Interfaz de Usuario (UI por sus siglas en inglés -
-_User Interface_). Para eso debes aprender a utilizar alguna herramienta de
-diseño visual. Nosotros te recomendamos [Figma](https://www.figma.com/) que es
-una herramienta que funciona en el navegador y, además, puedes crear una cuenta
-gratis. Sin embargo, eres libre de utilizar otros editores gráficos como
-Illustrator, Photoshop, etc.
-
-El diseño debe representar el _ideal_ de tu solución. Digamos que es lo que
-desearías implementar si tuvieras tiempo ilimitado para trabajar. Además, tu
-diseño debe seguir los fundamentos de _visual design_.
-
-Recuerda pedir feedback de tu prototipo a tus compañeras y/o coaches.
-
-#### Testeos de usabilidad
-
-Durante el reto deberás hacer _tests_ de usabilidad con distintos usuarios,
-y con base en los resultados, deberás iterar tus diseños. Cuéntanos
-qué problemas de usabilidad detectaste a través de los _tests_ y cómo los
-mejoraste en tu propuesta final.
-
-#### Implementación de la Interfaz de Usuario (HTML/CSS/JS)
-
-Luego de diseñar tu interfaz de usuario deberás trabajar en su implementación.
-**No** es necesario que construyas la interfaz exactamente como la diseñaste.
-Tu tiempo de hacking es escaso, así que deberás priorizar.
-
-Revisa [las funcionalidades](#3-funcionalidades) que el proyecto pide del interfaz.
-
-#### Pruebas unitarias
-
-El _boilerplate_ de este proyecto no incluye Pruebas Unitarias (_tests_), así es
-que  tendrás que escribirlas tú para las funciones encargadas de  _procesar_,
-_filtrar_ y _ordenar_ la data, así como _calcular_ estadísticas. Este proyecto usa
-el framework [Jest](https://jestjs.io/) para ejecutar las pruebas unitarias por lo
-que te recomendamos consultar su documentación.
-
-Tus _pruebas unitarias_ deben dar una cobertura del 70% de _statements_
-(_sentencias_), _functions_ (_funciones_), _lines_ (_líneas_), y _branches_
-(_ramas_) del archivo `src/dataFunctions.js` que contenga tus funciones y
-está detallado en la sección de [Consideraciones técnicas](#src/data.js).
-
 ## 7. Hacker edition
 
 Las secciones llamadas _Hacker Edition_ son **opcionales**. Si **terminaste**
@@ -573,12 +413,6 @@ profundizar y/o ejercitar más sobre los objetivos de aprendizaje del proyecto.
 
 Features/características extra sugeridas:
 
-* En lugar de consumir la data estática brindada en este repositorio, puedes
-  consumir la data de forma dinámica, cargando un archivo
-  [JSON](https://json.org/json-es.html) por medio de
-  [`fetch`](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API).
-  La carpeta `src/data` contiene una versión `.js` y una `.json` de
-  cada set datos.
 * Visualizar la estadística calculada mediante un gráfico. Para
   ello te recomendamos explorar librerías de gráficas como
   [Chart.js](https://www.chartjs.org/)
@@ -636,6 +470,146 @@ Cuando ya estés lista para codear, te sugerimos empezar de esta manera:
   `npm start` para arrancar el servidor web y dirígete a
   `http://localhost:5000` en tu navegador.
 6. A codear se ha dicho! :rocket:
+
+
+### Definición del producto
+
+Documenta brevemente tu trabajo en el archivo `README.md` de tu repositorio,
+contándonos cómo fue tu proceso de diseño y cómo crees que el producto resuelve
+el problema (o problemas) que tiene tu usuaria.
+
+### Historias de usuario
+
+Una vez que entiendas las necesidades de tus usuarios, escribe las [Historias
+de Usuario](https://es.wikipedia.org/wiki/Historias_de_usuario) que representen
+todo lo que la usuaria necesita hacer/ver. Las **Historias de Usuario** deben
+ser el resultado de tu proceso de investigación o _research_ de tus usuarios.
+
+Asegúrate de incluir la definición de terminado (_definition of done_) y los
+Criterios de Aceptación para cada una.
+
+Usa tus historias de usuario para planificar tus sprints dividiendo
+cada historia en tareas.
+
+En la medida de lo posible, termina una Historia de Usuario antes de pasar
+a la siguiente (Cumple con Definición de Terminado + Criterios de Aceptación).
+
+### Generar la data
+
+La temática será a tu gusto, por ejemplo, pueden ser personajes importantes en la
+historia, países, películas... etc. El archivo JSON debe tener una cantidad de 24
+objetos. Y la estructura de cada objeto deberá ser la siguiente:
+
+* `name:` Nombre del dato que se va dibujar en la vista.
+* `img:` una imagen que generes a través de alguna
+  herramienta de inteligencia artifical y luego
+  descargues y guardes en la carpeta [`./src/data/images`](./src/data/images).
+  La URL de esta imagen deberá ser el valor de la llave `img:`.
+* `statistics:` Un objeto con las siguientes propiedades:
+  - `value`: Un valor numérico para el cálculo agregado (por ejemplo,
+    puntuaciones, cantidades, fechas, etc).
+  - `label`: Descripción el valor numérico
+* `description:` Descripción corta sobre el dato.
+
+Un ejemplo de data, según los requisitos anteriores podría ser:
+
+```json
+[
+  {
+    "name": "Ada Lovelace",
+    "img": "URL_DE_LA_IMAGEN_GENERADA",
+    "statistic": {
+      "value": 1843,
+      "label": "año de nacimiento",
+    },
+    "description": "Primera programadora de la historia",
+  },
+  //... 23 objetos más
+]
+```
+
+La data generada deberás reemplazarla por el contenido de este archivo:
+`./src/data/dataSet.js`.
+
+**El tiempo estimado que deberías dedicar a la generación de esta data
+es de máximo un sprint.** Si transcurrido un sprint no tienes un conjunto de 
+datos generados deberás utilizar los datos de ejemplo ubicados en la
+ruta: [`./src/data/dataSet.js`](./src/data/dataSet.js).
+
+Las URLs de las imágenes, dentro del archivo JSON, deben hacer referencia
+a una directorio dentro del proyecto. Aquí almacenarás las imágenes que necesitarás
+para cada objeto.
+
+Una vez que tengas el archivo JSON completo, recuerda correr los test con
+`npm run test` para verificar que el archivo JSON esté cumpliendo con lo
+solicitado.
+
+### Prompt utilizado
+
+Dentro del readme que armarás, debe incluir una captura de pantalla
+de tu prompt utilizado para generar la data. Si utilizaste varios prompts,
+puedes adjuntar todas las capturas que necesites.
+
+### Diseño de la Interfaz de Usuario
+
+Una vez que hayas delimitado tu campo de interés y generado el JSON con la
+asistencia de la inteligenica artificial, dedica tiempo a comprender a
+fondo a tu usuario y sus
+necesidades específicas. A partir de esta comprensión, podrás diseñar la
+interfaz que facilite una interacción más efectiva y una comprensión más
+completa de los datos presentados.
+
+#### Prototipo de baja fidelidad
+
+Durante tu trabajo deberás haber hecho e iterado bocetos (_sketches_) de tu
+solución usando papel y lápiz. Te recomendamos tomar fotos de todas las
+iteraciones que hagas, que las subas a tu repositorio y las menciones en tu
+`README.md`.
+
+Recuerda pedir feedback de tu prototipo a tus compañeras y/o coaches.
+
+#### Prototipo de alta fidelidad
+
+Lo siguiente es diseñar tu Interfaz de Usuario (UI por sus siglas en inglés -
+_User Interface_). Para eso debes aprender a utilizar alguna herramienta de
+diseño visual. Nosotros te recomendamos [Figma](https://www.figma.com/) que es
+una herramienta que funciona en el navegador y, además, puedes crear una cuenta
+gratis. Sin embargo, eres libre de utilizar otros editores gráficos como
+Illustrator, Photoshop, etc.
+
+El diseño debe representar el _ideal_ de tu solución. Digamos que es lo que
+desearías implementar si tuvieras tiempo ilimitado para trabajar. Además, tu
+diseño debe seguir los fundamentos de _visual design_.
+
+Recuerda pedir feedback de tu prototipo a tus compañeras y/o coaches.
+
+### Testeos de usabilidad
+
+Durante el reto deberás hacer _tests_ de usabilidad con distintos usuarios,
+y con base en los resultados, deberás iterar tus diseños. Cuéntanos
+qué problemas de usabilidad detectaste a través de los _tests_ y cómo los
+mejoraste en tu propuesta final.
+
+### Implementación de la Interfaz de Usuario (HTML/CSS/JS)
+
+Luego de diseñar tu interfaz de usuario deberás trabajar en su implementación.
+**No** es necesario que construyas la interfaz exactamente como la diseñaste.
+Tu tiempo de hacking es escaso, así que deberás priorizar.
+
+Revisa [las funcionalidades](#3-funcionalidades) que el proyecto pide del interfaz.
+
+### Pruebas unitarias
+
+El _boilerplate_ de este proyecto no incluye Pruebas Unitarias (_tests_), así es
+que  tendrás que escribirlas tú para las funciones encargadas de  _procesar_,
+_filtrar_ y _ordenar_ la data, así como _calcular_ estadísticas. Este proyecto usa
+el framework [Jest](https://jestjs.io/) para ejecutar las pruebas unitarias por lo
+que te recomendamos consultar su documentación.
+
+Tus _pruebas unitarias_ deben dar una cobertura del 70% de _statements_
+(_sentencias_), _functions_ (_funciones_), _lines_ (_líneas_), y _branches_
+(_ramas_) del archivo `src/dataFunctions.js` que contenga tus funciones y
+está detallado en la sección de [Consideraciones técnicas](#src/data.js).
 
 ### Contenido de referencia
 
